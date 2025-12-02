@@ -1,4 +1,5 @@
 import { CorvaLogo, MeituanLogo, GPlansLogo } from "@/components/client-logos";
+import { motion } from "framer-motion";
 
 export const ClientsSection = () => {
   const clients = [
@@ -10,7 +11,13 @@ export const ClientsSection = () => {
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
           <p className="text-sm text-muted-foreground uppercase tracking-wider mb-4">
             OUR CLIENTS
           </p>
@@ -18,7 +25,7 @@ export const ClientsSection = () => {
             We are extremely proud of the results we have produced in
             cooperation with our amazing clients
           </h2>
-        </div>
+        </motion.div>
 
         <div className="relative overflow-hidden py-8">
           <div className="flex gap-16 animate-scroll items-center">

@@ -1,12 +1,17 @@
+import { motion } from "framer-motion";
+
 export const Logo = () => {
   return (
-    <svg
+    <motion.svg
       width="40"
       height="40"
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="transition-transform hover:scale-105 duration-300"
+      className="cursor-pointer"
+      whileHover={{ scale: 1.1, rotate: 5 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
       {/* Hexagon background */}
       <path
@@ -55,6 +60,6 @@ export const Logo = () => {
           <stop offset="100%" stopColor="hsl(var(--accent))" />
         </linearGradient>
       </defs>
-    </svg>
+    </motion.svg>
   );
 };

@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 export const ContactSection = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -101,7 +102,12 @@ export const ContactSection = () => {
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
             <h2 className="text-5xl font-light mb-6">
               We{" "}
               <span className="text-primary font-normal">Help You To Turn</span>
@@ -127,9 +133,15 @@ export const ContactSection = () => {
                 Belleville, Ontario, Canada
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-card border border-border rounded-lg p-8">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="bg-card border border-border rounded-lg p-8"
+          >
             <h3 className="text-2xl font-light text-center mb-2">
               Fill in the basics and we'll get in touch
             </h3>
@@ -210,7 +222,7 @@ export const ContactSection = () => {
                 {isSubmitting ? "SENDING..." : "GET IN TOUCH →"}
               </Button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
