@@ -32,8 +32,19 @@ cd <YOUR_PROJECT_NAME>
 # Step 3: Install the necessary dependencies.
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Set up environment variables
+# Copy .env.example to .env (if you haven't already)
+# The .env file is already configured with Gmail credentials
+
+# Step 5a: Start only the frontend (without contact form functionality)
 npm run dev
+
+# Step 5b: Start both frontend and backend server (for contact form to work)
+npm run dev:all
+
+# Alternative: Run frontend and backend in separate terminals
+# Terminal 1: npm run dev
+# Terminal 2: npm run server
 ```
 
 **Edit a file directly in GitHub**
@@ -54,11 +65,42 @@ npm run dev
 
 This project is built with:
 
+**Frontend:**
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+
+**Backend:**
+- Express.js
+- Nodemailer (for contact form email functionality)
+- CORS
+
+## Features
+
+### 1. **Individual Client Logos**
+The clients section now displays individual company logos (CORVA, Meituan, g:plans) as SVG components with smooth scrolling animation.
+
+### 2. **Enhanced Hero Section**
+- More vivid background images with CSS filters
+- Better opacity controls with smooth transitions
+- Layered gradient overlays for depth
+- Auto-rotating background slideshow
+
+### 3. **Working Contact Form**
+The contact form is now fully functional with:
+- Form validation
+- Email sending via Gmail
+- Loading states and error handling
+- Toast notifications for success/error messages
+- Service selection options
+
+**To use the contact form:**
+1. Start both frontend and backend servers: `npm run dev:all`
+2. The backend server runs on `http://localhost:3001`
+3. The frontend communicates with the backend API
+4. Emails are sent using the configured Gmail account
 
 ## How can I deploy this project?
 

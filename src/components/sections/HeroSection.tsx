@@ -24,22 +24,27 @@ export const HeroSection = () => {
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center px-6 py-20 overflow-hidden">
-      {/* Animated background images */}
+      {/* Animated background images with enhanced styling */}
       {backgrounds.map((bg, index) => (
         <div
           key={index}
-          className="absolute inset-0 transition-opacity duration-1000"
+          className="absolute inset-0 transition-all duration-1500 ease-in-out"
           style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: currentBg === index ? 0.25 : 0,
+            opacity: currentBg === index ? 0.45 : 0,
+            filter: currentBg === index ? 'brightness(1.1) contrast(1.1) saturate(1.3)' : 'brightness(1) contrast(1) saturate(1)',
+            transform: currentBg === index ? 'scale(1.05)' : 'scale(1)',
           }}
         />
       ))}
       
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
+      {/* Enhanced gradient overlay with better blending */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/80 to-background/90" />
+      
+      {/* Additional radial gradient for depth */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-background/30 to-background/70" />
       
       <div className="container max-w-5xl mx-auto relative z-10">
         <div className="text-center space-y-8 animate-fade-in">
