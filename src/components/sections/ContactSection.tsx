@@ -64,9 +64,10 @@ export const ContactSection = () => {
 
     setIsSubmitting(true);
 
-    // Get API URL from environment variable, fallback to localhost for development
-    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
-    const contactEndpoint = `${apiUrl}/api/contact`;
+    // Get API URL from environment variable
+    // If VITE_API_URL is set, use it; otherwise use relative path (same domain)
+    const apiUrl = import.meta.env.VITE_API_URL || "";
+    const contactEndpoint = apiUrl ? `${apiUrl}/api/contact` : "/api/contact"; // Relative path works on Vercel (same domain)
 
     try {
       const response = await axios.post(contactEndpoint, {

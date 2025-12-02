@@ -1,55 +1,19 @@
-import express from "express";
-import cors from "cors";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// CORS configuration - allow requests from frontend
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || "*", // Allow all origins in dev, set specific URL in production
-  credentials: true,
-};
-
-// Middleware
-app.use(cors(corsOptions));
-app.use(express.json());
-
-// Root route for testing
-app.get("/", (req, res) => {
-  res.json({ 
-    status: "ok", 
-    message: "Backend server is running",
-    endpoints: {
-      health: "/api/health",
-      contact: "POST /api/contact"
-    }
-  });
-});
-
-// Create nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
-
-// Verify transporter configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("Email transporter error:", error);
-  } else {
-    console.log("Email server is ready to send messages");
+export default async function handler(req, res) {
+  // Only allow POST requests
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      success: false,
+      message: "Method not allowed",
+    });
   }
-});
 
-// Contact form endpoint
-app.post("/api/contact", async (req, res) => {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   try {
     const { company, email, phone, message, services } = req.body;
 
@@ -60,6 +24,15 @@ app.post("/api/contact", async (req, res) => {
         message: "Please fill in all required fields",
       });
     }
+
+    // Create nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
 
     // Email options
     const mailOptions = {
@@ -108,41 +81,16 @@ app.post("/api/contact", async (req, res) => {
     // Send email
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message:
         "Your message has been sent successfully! We will get back to you soon.",
     });
   } catch (error) {
     console.error("Error sending email:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to send message. Please try again later.",
     });
   }
-});
-
-// Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "Server is running" });
-});
-
-// Catch-all route for debugging
-app.use("*", (req, res) => {
-  res.status(404).json({
-    error: "Route not found",
-    method: req.method,
-    path: req.originalUrl,
-    availableRoutes: [
-      "GET /",
-      "GET /api/health",
-      "POST /api/contact"
-    ]
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
-  console.log(`Contact endpoint: POST http://localhost:${PORT}/api/contact`);
-});
+}
