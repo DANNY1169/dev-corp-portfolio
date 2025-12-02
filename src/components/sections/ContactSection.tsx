@@ -128,7 +128,6 @@ export const ContactSection = () => {
 
             <div className="mt-8 pt-8 border-t border-border">
               <p className="text-sm text-muted-foreground mb-2">DEV'S CORP</p>
-              <p className="text-sm text-muted-foreground">BN 774985352</p>
               <p className="text-sm text-muted-foreground">
                 Belleville, Ontario, Canada
               </p>

@@ -5,8 +5,9 @@ export const Footer = () => {
         <div className="text-center">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-foreground">DEV'S CORP</h3>
-            <p className="text-sm text-muted-foreground">BN 774985352</p>
-            <p className="text-sm text-muted-foreground">Belleville, Ontario, Canada</p>
+            <p className="text-sm text-muted-foreground">
+              Belleville, Ontario, Canada
+            </p>
           </div>
           <p className="text-muted-foreground text-sm">
             © 2024 DEV'S CORP. All rights reserved.
