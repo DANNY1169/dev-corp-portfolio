@@ -1,20 +1,26 @@
-import express from 'express';
-import cors from 'cors';
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// CORS configuration - allow requests from frontend
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "*", // Allow all origins in dev, set specific URL in production
+  credentials: true,
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Create nodemailer transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
@@ -24,14 +30,14 @@ const transporter = nodemailer.createTransport({
 // Verify transporter configuration
 transporter.verify((error, success) => {
   if (error) {
-    console.error('Email transporter error:', error);
+    console.error("Email transporter error:", error);
   } else {
-    console.log('Email server is ready to send messages');
+    console.log("Email server is ready to send messages");
   }
 });
 
 // Contact form endpoint
-app.post('/api/contact', async (req, res) => {
+app.post("/api/contact", async (req, res) => {
   try {
     const { company, email, phone, message, services } = req.body;
 
@@ -39,7 +45,7 @@ app.post('/api/contact', async (req, res) => {
     if (!company || !email || !phone || !message) {
       return res.status(400).json({
         success: false,
-        message: 'Please fill in all required fields',
+        message: "Please fill in all required fields",
       });
     }
 
@@ -62,12 +68,16 @@ app.post('/api/contact', async (req, res) => {
             <p><strong>Phone:</strong> ${phone}</p>
           </div>
           
-          ${services && services.length > 0 ? `
+          ${
+            services && services.length > 0
+              ? `
           <div style="margin: 20px 0;">
             <h3 style="color: #4f46e5; margin-bottom: 10px;">Services Interested In</h3>
-            <p>${services.join(', ')}</p>
+            <p>${services.join(", ")}</p>
           </div>
-          ` : ''}
+          `
+              : ""
+          }
           
           <div style="margin: 20px 0;">
             <h3 style="color: #4f46e5; margin-bottom: 10px;">Message</h3>
@@ -88,23 +98,23 @@ app.post('/api/contact', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Your message has been sent successfully! We will get back to you soon.',
+      message:
+        "Your message has been sent successfully! We will get back to you soon.",
     });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to send message. Please try again later.',
+      message: "Failed to send message. Please try again later.",
     });
   }
 });
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Server is running" });
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
